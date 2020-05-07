@@ -1,4 +1,4 @@
-Hello, This is my first React App that i have build. Any Suggestion and feedback would be appreciated.
+Hello, This is my first React App that i have build. Any Suggestions and feedback would be appreciated.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
