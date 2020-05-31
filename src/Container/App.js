@@ -1,6 +1,6 @@
 import React , {Component} from 'react';
 import {connect} from 'react-redux';
-import {searchfieldInput} from '../actions';
+import {searchfieldInput, fetchRobotsData} from '../actions';
 import SearchBox from '../Components/SearchBox'
 import CardList from '../Components/CardList';
 import Scroll from '../Components/Scroll';
@@ -9,37 +9,34 @@ import './App.css'
 import 'tachyons';
 
 const mapStateToProps=(state)=>{
+	console.log(state)
 return{
-	searchField: state.searchField,
+	searchField: state.setSearchfield.searchField,
+	robots: state.fetchingRobotsDisplay.robots,
+	isFetching:state.fetchingRobotsDisplay.isFetching
 }
 }
 
 const mapDispatchToProps=(dispatch)=>{
 	return{
-		onSearchChange: (event)=>dispatch(searchfieldInput(event.target.value))
+		onSearchChange: (event)=>dispatch(searchfieldInput(event.target.value)),
+		onFetchingRobots: ()=> dispatch(fetchRobotsData())
 	}
 }
 
 class App extends Component{
-	constructor(){
-		super()
-		this.state= {
-			robots: [],
-		}
-	}
+	
  componentDidMount(){
- 	fetch('https://jsonplaceholder.typicode.com/users')
- 	.then(response=> response.json())
- 	.then(users=> this.setState({robots: users}))
+ 	this.props.onFetchingRobots()
  }
 
  
 
 	render(){
-		const filterRobots = this.state.robots.filter(robot=>{
+		const filterRobots = this.props.robots.filter(robot=>{
  		return robot.name.toLowerCase().includes(this.props.searchField.toLowerCase());
  	})
-		if(this.state.robots.length===0){
+		if(this.props.isFetching){
 		  return (<h1 className='loading f1'>
 					LOADING<span>.</span><span>.</span><span>.</span>
 				  </h1>
